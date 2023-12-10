@@ -1,0 +1,2 @@
+php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+php artisan db:seed --class=AdminSeeder
