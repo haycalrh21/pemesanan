@@ -15,6 +15,7 @@ use App\Http\Controllers\RegisterController;
 
 
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/layanan', [HomeController::class, 'layanan'])->name('semualayanan');
 Route::get('/about',function (){
     return view('home.about');
 });
@@ -40,7 +41,7 @@ Route::middleware(['role:vendor'])->group(function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
-    Route::get('/layanan', [AdminController::class, 'layanan'])->name('datalayanan');
+    Route::get('/datalayanan', [AdminController::class, 'layanan'])->name('datalayanan');
     Route::get('/datavendor',[AdminController::class, 'vendor'])->name('datavendor');
 });
 

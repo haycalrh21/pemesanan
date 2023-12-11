@@ -12,4 +12,10 @@ class HomeController extends Controller
         $pesanans = Pesanan::all();
         return view('home.index', compact('pesanans'));
     }
+
+
+    public function layanan(){
+        $pesanans = Pesanan::all();
+        return view('home.layanan.index',compact('pesanans'));
+    }
 }

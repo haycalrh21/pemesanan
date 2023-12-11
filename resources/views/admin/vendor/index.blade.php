@@ -33,7 +33,7 @@
     <section>
         @include('components.navbaradmin')
         <div>
-            <h1>Halaman Data layanan</h1>
+            <h1>Halaman Data layanan    </h1>
         </div>
     </section>
     <section>

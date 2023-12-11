@@ -107,8 +107,8 @@
 
 
                     </li>
-                    <li><a href="/about">Dashboard</a></li>
-                    <li><a href="/test">Orderku</a></li>
+                    <li><a href="{{ route('semualayanan') }}">Layanan</a></li>
+
 
                     @if(auth()->check() && auth()->user()->role !== 'vendor')
                     <li><a href="{{ route('jadivendor') }}">Vendor</a></li>

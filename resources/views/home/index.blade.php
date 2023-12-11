@@ -73,6 +73,12 @@
     </section>
 
     <section>
+
+        <div style= "margin-top:20px; display: flex; justify-content: center; align-items: center; height: 1vh;">
+            <input type="text" style="border-radius: 10px; padding: 10px; width: 500px; margin-right: 10px;">
+            <button style="padding: 10px 20px; background-color: #3498db; color: #ffffff; border: none; border-radius: 5px;">Cari</button>
+        </div>
+
         @guest
             <div style="text-align: center;">
                 <h1>Halo Everyone!!</h1>
@@ -106,15 +112,16 @@
                     @endif
                 @endforeach
             </div>
-        </div>
-
-
-
 
         <div class="carousel-nav" style="text-align: center;">
             <button class="carousel-button-prev">Previous</button>
             <button class="carousel-button-next">Next</button>
         </div>
+        </div>
+
+
+
+
 
 
 
@@ -126,13 +133,49 @@
         <div>
             <h1>Apasih yang lu cari ?</h1>
         </div>
-        <div style="display:flex; gap:25%; justify-content: center;">
-            <h1>test</h1>
-            <h1>test</h1>
-            <h1>test</h1>
-            <h1>test</h1>
+        <div style="display: flex; gap: 1rem; justify-content: center; padding: 25px; height: 60vh;">
+
+            <!-- Card 1 -->
+            <div style="border: 1px solid #ddd; padding: 15px; width: 200px;">
+                <h1 style="margin-bottom: 10px;">Udara ?</h1>
+                <img src="{{ asset('gambar/plane.png') }}" alt="Ferry Image" style="width:70%; max-height: 150px; object-fit: cover;">
+
+                <button onclick="window.location='{{ route('login') }}'" style="border-radius: 10px; background-color: #3498db; margin-top: 25%; padding: 10px 20px; color: #ffffff; font-size: 16px;">Test</button>
+
+            </div>
+
+            <!-- Card 2 -->
+            <div style="border: 1px solid #ddd; padding: 15px; width: 200px;">
+                <h1>Darat ?</h1>
+                <img src="{{ asset('gambar/truck.png') }}" alt="Ferry Image" style="width: 70%; max-height: 150px; object-fit: cover;">
+
+                <button onclick="window.location='{{ route('login') }}'" style="border-radius: 10px; background-color: #3498db; margin-top: 20%; padding: 10px 20px; color: #ffffff; font-size: 16px;">Test</button>
+
+            </div>
+
+            <!-- Card 3 -->
+            <div style="border: 1px solid #ddd; padding: 15px; width: 200px;">
+                <h1>Laut ?</h1>
+                <img src="{{ asset('gambar/ferry.png') }}" alt="Ferry Image" style="width: 70%; max-height: 150px; object-fit: cover;">
+
+                <button onclick="window.location='{{ route('login') }}'" style="border-radius: 10px; background-color: #3498db; margin-top: 20%; padding: 10px 20px; color: #ffffff; font-size: 16px;">Test</button>
+
+            </div>
+            <!-- Card 3 -->
+            <div style="border: 1px solid #ddd; padding: 15px; width: 200px;">
+                <h1>apa semuanya ?</h1>
+                <img src="{{ asset('gambar/ferry.png') }}" alt="Ferry Image" style="width: 70%; max-height: 150px; object-fit: cover;">
+
+                <button onclick="window.location='{{ route('semualayanan') }}'" style="border-radius: 10px; background-color: #3498db; margin-top: 20%; padding: 10px 20px; color: #ffffff; font-size: 16px;">Test</button>
+
+            </div>
+
+
+
+
         </div>
     </section>
+
 </body>
 
 
