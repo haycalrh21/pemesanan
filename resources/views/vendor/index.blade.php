@@ -13,9 +13,14 @@
     <section>
         <h1>halaman Vendor</h1>
     </section>
+    @php
+    $userId = auth()->id();
+@endphp
 
     <section>
         @foreach ($pesanans as $pesanan )
+        @if ($pesanan->user_id === $userId)
+
         <div class="card" style="width: 18rem; margin-bottom: 20px;">
             <div class="card-body">
                 <h5 class="card-title">Pesanan ID: {{ $pesanan->id }}</h5>
@@ -31,14 +36,15 @@
                 <p class="card-text">Status: {{ $pesanan->status }}</p>
 
                 @if ($pesanan->gambar_pesanan)
-                    <div class="card-img-top">
-                        @foreach(json_decode($pesanan->gambar_pesanan) as $gambarPath)
-                            <img src="{{ asset('storage/' . $gambarPath) }}" alt="Gambar Pesanan" style="width: 100%;">
-                        @endforeach
-                    </div>
+                <div class="card-img-top">
+                    @foreach(json_decode($pesanan->gambar_pesanan) as $gambarPath)
+                    <img src="{{ asset('storage/' . $gambarPath) }}" alt="Gambar Pesanan" style="width: 100%;">
+                    @endforeach
+                </div>
                 @endif
             </div>
         </div>
+        @endif
         @endforeach
     </section>
 

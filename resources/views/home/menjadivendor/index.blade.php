@@ -6,17 +6,21 @@
     <title>Form Pendaftaran Vendor</title>
 </head>
 <body>
+
+<section>
+    @include('components.navbar')
+</section>
     <h2>Form Pendaftaran Vendor</h2>
     <form action="{{ route('daftar') }}" method="post">
         @csrf
         <label for="name">Nama Lengkap:</label>
-        <input type="text" name="name" required><br>
+        <input type="text" name="name" value="{{auth()->user()->name}}" required><br>
 
         <label for="name">alamat</label>
-        <input type="text" name="alamat" placeholder="masukan nama" required><br>
+        <input type="text" name="alamat" placeholder="masukan alamat    " required><br>
 
         <label for="email">Email:</label>
-        <input type="email" name="email" placeholder="masukam email yang sedang login" required><br>
+        <input type="email" name="email" placeholder="masukam email yang sedang login" value="{{auth()->user()->email}}" required><br>
 
         <label for="name">Nomor Hape :</label>
         <input type="text" name="nohp" placeholder="masukan no handphone" required><br>

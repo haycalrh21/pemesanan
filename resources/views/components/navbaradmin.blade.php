@@ -41,7 +41,7 @@
         nav a {
             text-decoration: none;
             color: white;
-            transition: color 0.3s;
+            /* transition: color 0.3s; */
             display: block;
             padding: 10px;
         }
@@ -70,7 +70,7 @@
 
             display: block;
             padding: 10px;
-            transition: background-color 0.3s;
+            /* transition: background-color 0.3s; */
         }
 
         .dropdown a:hover {
@@ -88,7 +88,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
+            /* transition: background-color 0.3s; */
         }
 
         .dark-mode-btn:hover {
@@ -107,8 +107,15 @@
 
 
                     </li>
-                    <li><a href="{{ route('datavendor') }}">Data Vendor</a></li>
-                    <li><a href="/test">Test</a></li>
+
+                    <li>
+                        <a >Layanan</a>
+                        <!-- Dropdown for Login -->
+                        <div class="dropdown">
+                            <a href="{{ route('datalayanan') }}">Data Layanan</a>
+                            <a href="{{ route('datavendor') }}">Data Vendor</a>
+                        </div>
+                    </li>
 
                     @auth
                         <li>

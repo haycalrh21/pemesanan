@@ -4,21 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data Vendor</title>
+    <title>Data layanan</title>
 </head>
+
+<style>
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .table, th, td {
+        border: 1px solid #050505;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #100f0f;
+        color: white;
+        text-align: center;
+    }
+</style>
 <body>
     <section>
         @include('components.navbaradmin')
         <div>
-            <h1>Halaman Data vendor</h1>
+            <h1>Halaman Data layanan</h1>
         </div>
     </section>
     <section>
-        @foreach ($pesanans as $pesanan )
-        <h5 class="card-title">Pesanan ID: {{ $pesanan->id }}</h5>
-        <p class="card-text">Vendor ID: {{ $pesanan->vendor_id }}</p>
 
-        @endforeach
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Layanan ID</th>
+                    <th>Vendor ID</th>
+                    <th>Jenis Layanan</th>
+                    <th>Jenis Detail Layanan</th>
+                    <th>Nama Layanan</th>
+                    <th>Provinsi</th>
+                    <th>Kota</th>
+                    <th>Kecamatan</th>
+                    <th>Kelurahan</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($pesanans as $pesanan)
+                    <tr>
+                        <td>{{ $pesanan->id }}</td>
+                        <td>{{ $pesanan->vendor_id }}</td>
+                        <td>{{ $pesanan->jenis_pesanan }}</td>
+                        <td>{{ $pesanan->jenis_detail }}</td>
+                        <td>{{ $pesanan->nama_pesanan }}</td>
+                        <td>{{ $pesanan->lokasi_provinsi }}</td>
+                        <td>{{ $pesanan->lokasi_kota }}</td>
+                        <td>{{ $pesanan->lokasi_kecamatan }}</td>
+                        <td>{{ $pesanan->lokasi_kelurahan }}</td>
+                        <td>{{ $pesanan->status }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </section>
 </body>
 </html>

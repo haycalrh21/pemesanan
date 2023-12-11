@@ -40,8 +40,8 @@ Route::middleware(['role:vendor'])->group(function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
-    Route::get('/vendor', [AdminController::class, 'vendor'])->name('datavendor');
-
+    Route::get('/layanan', [AdminController::class, 'layanan'])->name('datalayanan');
+    Route::get('/datavendor',[AdminController::class, 'vendor'])->name('datavendor');
 });
 
 // GOOGLE LOGIN
