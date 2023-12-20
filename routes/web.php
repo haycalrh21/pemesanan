@@ -14,16 +14,18 @@ use App\Http\Controllers\RegisterController;
 
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/layanan', [HomeController::class, 'layanan'])->name('semualayanan');
 Route::get('/about',function (){
     return view('home.about');
 });
-
+Route::get('/search',[HomeController::class,'search'])->name('carilayanan');
 Route::get('/test', function(){
     return view ('home.test');
 });
 
+Route::get('/layanan/{jenis_pesanan}', [HomeController::class, 'layanansort'])->name('layananaja');
+Route::get('/vendor/layanan/{id?}', [PesananController::class, 'vendordetail'])->name('vendordetail');
 
 
 Route::middleware(['role:user'])->group(function () {
@@ -32,10 +34,12 @@ Route::middleware(['role:user'])->group(function () {
 });
 
 Route::middleware(['role:vendor'])->group(function () {
-    Route::get('/vendor', [VendorController::class,'index'])->name('vendor.index');
+    Route::get('/vendors', [VendorController::class,'index'])->name('vendor.index');
+    Route::delete('/delete/{id}',[VendorController::class,'delete'])->name('deleteiklan');
     Route::get('/form',[PesananController::class,'index'])->name('formpesanan');
     Route::post('/form',[PesananController::class,'form'])->name('prosespesanan');
-    Route::get('/profil',[PesananController::class,'show'])->name('profil');
+    Route::get('/vendor/layanan',[PesananController::class,'vendorlayanan'])->name('vendorlayanan');
+    Route::get('/vendor/profile',[VendorController::class,'profile'])->name('profile');
 });
 
 
@@ -50,8 +54,14 @@ Route::get('/auth/redirect',[SocialController::class,'redirect'])->name('googlel
 Route::get('/google/callback',[SocialController::class,'callback'])->name('googlecallback');
 // login normal
 Route::post('/logout',[LoginController::class,'logout'])->name('logout');
-Route::get('/login',[LoginController::class ,'login'])->name('login');
-Route::post('/login',[LoginController::class ,'proseslogin'])->name('proseslogin');
 
-Route::get('/register',[RegisterController::class ,'index'])->name('tampilanregister');
-Route::post('/register',[RegisterController::class ,'register'])->name('register');
+
+
+
+    Route::middleware(['web','guest'])->group(function () {
+        Route::get('/register', [RegisterController::class, 'index'])->name('register');
+        Route::post('/register', [RegisterController::class, 'register'])->name('prosesregister');
+
+    Route::get('/login', [LoginController::class, 'login'])->name('login');
+    Route::post('/login', [LoginController::class, 'proseslogin'])->name('proseslogin');
+    });

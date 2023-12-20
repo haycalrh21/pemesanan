@@ -28,7 +28,7 @@
         }
 
         .card {
-            flex: 0 0 calc(25% - 50px);
+            flex: 0 0 calc(33.33% - 20px);
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -98,7 +98,7 @@ button:hover {
 }
 
 
-        @media (max-width: 1000px) {
+        @media (max-width: 768px) {
             .card {
                 flex: 0 0 calc(50% - 20px);
             }
@@ -135,74 +135,51 @@ button:hover {
 </head>
 @include('components.navbar')
 <body>
+
+
+
+
+
     <section>
-        <div>
-            <!-- Include navbar atau apapun yang diperlukan -->
-            <h1>Halaman Layanan</h1>
-        </div>
-        <div>
-            <form action="{{ route('carilayanan') }}" method="get">
-            <center>
-                <input type="text" name="keyword" placeholder="cari kata pencarian">
-<button type="submi">cari </button>
-             </center>
-            </form>
-        </div>
-    </section>
+        <section class="card-container">
+            <!-- Loop untuk setiap pesanan -->
+            @if(count($pesanan) > 0)
+            @foreach ($pesanan as $order)
+            <div class="card">
+                <h1 class="card-text">{{ $order->nama_pesanan }}</h1>
 
-    <section class="card-container">
-        <!-- Loop untuk setiap pesanan -->
-        @foreach ($pesanans as $pesanan)
-        <div class="card">
-            <h1 class="card-text">{{ $pesanan->nama_pesanan }}</h1>
+                <p class="card-text">Jenis Layanan: {{ $order->jenis_pesanan }}</p>
+                <p class="card-text">Jenis Detail Layanan: {{ $order->jenis_detail }}</p>
+                <p class="card-text">Lokasi Provinsi: {{ $order->lokasi_provinsi }}</p>
+                <p class="card-text">Lokasi Kota: {{ $order->lokasi_kota }}</p>
 
-
-
-
-            <p class="card-text">
-                Lokasi Provinsi: {{ optional(collect($provinsiData)->firstWhere('id', $pesanan->lokasi_provinsi))['name'] ?? 'Unknown Province' }}
-                (Provinsi ID: {{ $pesanan->lokasi_provinsi }})
-            </p>
-            <p class="card-text">
-                Lokasi Kota: {{ optional(collect($kotaData)->firstWhere('id', $pesanan->lokasi_kota))['name'] ?? 'Unknown City' }}
-                (Kota ID: {{ $pesanan->lokasi_kota }})
-            </p>
-
-
-
-
-
-
-
-
-
-
-            <!-- Tampilkan gambar pertama -->
-            @if ($pesanan->gambar_pesanan)
-            <div class="card-img-top">
-                @php
-                $firstImage = json_decode($pesanan->gambar_pesanan)[0];
-                @endphp
-                <img src="{{ asset('storage/' . $firstImage) }}" alt="Gambar Pesanan">
-            </div>
-            @endif
-
-            <!-- Tombol-tombol -->
-            <div class="card-buttons">
-                <!-- Tombol pesan -->
-                @if($vendors->count() > 0)
-                <button onclick="window.location.href='https://wa.me/{{ $vendors[0]->nohp }}'">Pesan</button>
-                @else
-                <p>Tidak ada vendor.</p>
+                <!-- Tampilkan gambar pertama -->
+                @if ($order->gambar_pesanan)
+                <div class="card-img-top">
+                    @php
+                    $firstImage = json_decode($order->gambar_pesanan)[0];
+                    @endphp
+                    <img src="{{ asset('storage/' . $firstImage) }}" alt="Gambar Pesanan">
+                </div>
                 @endif
 
-                <!-- Tombol lihat detail -->
-                <button onclick="window.location.href='{{ route('vendordetail', ['id' => $pesanan->id]) }}'">Lihat Detail</button>
+                <!-- Tombol-tombol -->
+                <div class="card-buttons">
+                    <!-- Tombol pesan -->
+                    @if($vendors->count() > 0)
+                    <button onclick="window.location.href='https://wa.me/{{ $vendors[0]->nohp }}'">Pesan</button>
+                    @else
+                    <p>Tidak ada vendor.</p>
+                    @endif
+
+                    <!-- Tombol lihat detail -->
+                    <button onclick="window.location.href='{{ route('vendordetail', ['id' => $order->id]) }}'">Lihat Detail</button>
+
+                </div>
             </div>
-        </div>
-        @endforeach
+            @endforeach
+            @endif
+        </section>
     </section>
-
 </body>
-
 </html>

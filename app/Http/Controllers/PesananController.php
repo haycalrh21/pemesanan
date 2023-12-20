@@ -2,21 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Vendor;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+
 
 class PesananController extends Controller
 {
     public function index()
     {
+
+
         return view('vendor.buatpesanan');
+}
+
+
+    public function vendordetail($id){
+
+        $pesanan = Pesanan::find($id);
+
+        // Jika pesanan tidak ditemukan, bisa menangani dengan redirect atau menampilkan pesan error
+        if (!$pesanan) {
+            return redirect()->route('vendordetail')->with('error', 'Pesanan tidak ditemukan.');
+        }
+
+        // Kirim data pesanan ke view detail
+        return view('home.layanan.detail.index', ['pesanan' => $pesanan]);
     }
+
 
     public function form(Request $request)
     {
         try {
-            // Validasi form sesuai kebutuhan
             $request->validate([
                 'vendor_id' => 'required|exists:vendors,id',
                 'user_id' => 'required|exists:users,id',
@@ -30,10 +49,34 @@ class PesananController extends Controller
                 'status' => 'required|in:free,berbayar',
                 'gambar_pesanan.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
+    
+            // Fetch names from the EMSIFA API
+            $provinsiId = $request->input('lokasi_provinsi');
+            $kotaId = $request->input('lokasi_kota');
+            $kecamatanId = $request->input('lokasi_kecamatan');
+            $kelurahanId = $request->input('lokasi_kelurahan');
+    
+            $provinsi = $this->getNameFromAPI('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', $provinsiId);
+            $kota = $this->getNameFromAPI("https://www.emsifa.com/api-wilayah-indonesia/api/regencies/{$provinsiId}.json", $kotaId);
+            $kecamatan = $this->getNameFromAPI("https://www.emsifa.com/api-wilayah-indonesia/api/districts/{$kotaId}.json", $kecamatanId);
+            $kelurahan = $this->getNameFromAPI("https://www.emsifa.com/api-wilayah-indonesia/api/villages/{$kecamatanId}.json", $kelurahanId);
+    
             // Simpan pesanan ke database
-            $pesanan = Pesanan::create($request->except('gambar_pesanan'));
-
+            $pesananData = [
+                'vendor_id' => $request->input('vendor_id'),
+                'user_id' => $request->input('user_id'),
+                'jenis_pesanan' => $request->input('jenis_pesanan'),
+                'jenis_detail' => $request->input('jenis_detail'),
+                'nama_pesanan' => $request->input('nama_pesanan'),
+                'lokasi_provinsi' => $provinsi,
+                'lokasi_kota' => $kota,
+                'lokasi_kecamatan' => $kecamatan,
+                'lokasi_kelurahan' => $kelurahan,
+                'status' => $request->input('status'),
+            ];
+    
+            $pesanan = Pesanan::create($pesananData);
+    
             // Proses unggahan gambar
             if ($request->hasFile('gambar_pesanan')) {
                 $gambarPaths = [];
@@ -44,7 +87,7 @@ class PesananController extends Controller
                 $pesanan->gambar_pesanan = $gambarPaths;
                 $pesanan->save();
             }
-
+    
             return redirect('/')->with('success', 'Pesanan berhasil dibuat!');
         } catch (\Exception $e) {
             // Tangkap pesan kesalahan dan log
@@ -52,13 +95,31 @@ class PesananController extends Controller
             return redirect('/')->with('error', 'Terjadi kesalahan. Silakan coba lagi.');
         }
     }
+    
 
 
-    public function show(){
-        $pesanans = Pesanan::all();
+    private function getNameFromAPI($url, $id)
+{
+    $response = file_get_contents($url);
+    $data = json_decode($response, true);
 
-        // dd($pesanans);
-        return view('vendor.index', compact('pesanans'));
+    foreach ($data as $item) {
+        if ($item['id'] == $id) {
+            return $item['name'];
+        }
     }
+
+    return null;
+}
+
+    public function vendorlayanan(){
+        $pesanans = Pesanan::all();
+        $vendors = Vendor::all();
+        // dd($pesanans);
+        return view('vendor.index', compact('pesanans','vendors'));
+    }
+
+
+
 }
 

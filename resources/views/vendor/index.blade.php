@@ -1,52 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <title>Document</title>
 </head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+
+
+    h2 {
+        color: #070707;
+        text-align: left;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .card {
+        flex: 0 0 calc(33.33% - 20px);
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        width: 275px;
+        box-sizing: border-box;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #000000;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+
+    img {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .card-img-top {
+        overflow: hidden;
+    }
+
+    /* Kecilkan semua gambar */
+    .card img {
+        width: 100%;
+        max-height: 300px;
+        /* Ubah tinggi maksimum sesuai kebutuhan Anda */
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .card {
+            flex: 0 0 calc(50% - 20px);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .card {
+            flex: 0 0 100%;
+        }
+    }
+</style>
+
 <body>
     <section>
         @include('components.navbar')
     </section>
     <section>
-        <h1>halaman Vendor</h1>
     </section>
+    <h1>halaman Vendor</h1>
+
     @php
     $userId = auth()->id();
-@endphp
+    @endphp
 
-    <section>
-        @foreach ($pesanans as $pesanan )
+    <section class="card-container">
+        @foreach ($pesanans as $pesanan)
         @if ($pesanan->user_id === $userId)
+        <div class="card">
+            <h1 class="card-text"> {{ $pesanan->nama_pesanan }}</h1>
+            <p class="card-text">Jenis Layanan: {{ $pesanan->jenis_pesanan }}</p>
+            <p class="card-text">Jenis Detail Layanan: {{ $pesanan->jenis_detail }}</p>
+            <p class="card-text">Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}</p>
+            <p class="card-text">Lokasi Kota: {{ $pesanan->lokasi_kota }}</p>
 
-        <div class="card" style="width: 18rem; margin-bottom: 20px;">
-            <div class="card-body">
-                <h5 class="card-title">Pesanan ID: {{ $pesanan->id }}</h5>
-                <p class="card-text">Vendor ID: {{ $pesanan->vendor_id }}</p>
-                <p class="card-text">User ID: {{ $pesanan->user_id }}</p>
-                <p class="card-text">Jenis Pesanan: {{ $pesanan->jenis_pesanan }}</p>
-                <p class="card-text">Jenis Detail: {{ $pesanan->jenis_detail }}</p>
-                <p class="card-text">Nama Pesanan: {{ $pesanan->nama_pesanan }}</p>
-                <p class="card-text">Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}</p>
-                <p class="card-text">Lokasi Kota: {{ $pesanan->lokasi_kota }}</p>
-                <p class="card-text">Lokasi Kecamatan: {{ $pesanan->lokasi_kecamatan }}</p>
-                <p class="card-text">Lokasi Kelurahan: {{ $pesanan->lokasi_kelurahan }}</p>
-                <p class="card-text">Status: {{ $pesanan->status }}</p>
-
-                @if ($pesanan->gambar_pesanan)
-                <div class="card-img-top">
-                    @foreach(json_decode($pesanan->gambar_pesanan) as $gambarPath)
-                    <img src="{{ asset('storage/' . $gambarPath) }}" alt="Gambar Pesanan" style="width: 100%;">
+            <div id="carouselExample{{ $pesanan->id }}" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @php
+                    $gambarPesanan = json_decode($pesanan->gambar_pesanan);
+                    @endphp
+                    @foreach ($gambarPesanan as $index => $gambar)
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                        <img src="{{ asset('storage/' . $gambar) }}" class="d-block w-100" alt="Gambar Pesanan">
+                    </div>
                     @endforeach
                 </div>
-                @endif
+
+                <button onclick="deletePesanan({{ $pesanan->id }})">Hapus</button>
+
+
+                <button ">Ubah iklan</button>
+
+
+
             </div>
+
+
         </div>
         @endif
         @endforeach
     </section>
-
 </body>
+<script>
+    let slideIndex = 0;
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("carousel-item");
+
+        if (n >= slides.length) {
+            slideIndex = 0;
+        }
+
+        if (n < 0) {
+            slideIndex = slides.length - 1;
+        }
+
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        slides[slideIndex].style.display = "block";
+    }
+
+
+    function deletePesanan(id) {
+    if (confirm('Apakah Anda yakin ingin menghapus iklan ini?')) {
+        fetch(`/delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            // Handle response atau redirect ke halaman lain jika diperlukan
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+</script>
+
+
+
 </html>
