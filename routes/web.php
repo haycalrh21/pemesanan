@@ -1,10 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SocialController;
@@ -16,13 +14,10 @@ use App\Http\Controllers\RegisterController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/layanan', [HomeController::class, 'layanan'])->name('semualayanan');
-Route::get('/about',function (){
-    return view('home.about');
-});
+
+Route::get('/about',function (){return view('home.about');});
 Route::get('/search',[HomeController::class,'search'])->name('carilayanan');
-Route::get('/test', function(){
-    return view ('home.test');
-});
+Route::get('/test', function(){return view ('home.test');});
 
 Route::get('/layanan/{jenis_pesanan}', [HomeController::class, 'layanansort'])->name('layananaja');
 Route::get('/vendor/layanan/{id?}', [PesananController::class, 'vendordetail'])->name('vendordetail');
@@ -49,19 +44,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function () 
     Route::get('/datavendor',[AdminController::class, 'vendor'])->name('datavendor');
 });
 
-// GOOGLE LOGIN
-Route::get('/auth/redirect',[SocialController::class,'redirect'])->name('googlelogin');
-Route::get('/google/callback',[SocialController::class,'callback'])->name('googlecallback');
-// login normal
-Route::post('/logout',[LoginController::class,'logout'])->name('logout');
 
 
 
 
     Route::middleware(['web','guest'])->group(function () {
+        Route::get('/auth/redirect',[SocialController::class,'redirect'])->name('googlelogin');
+        Route::get('/google/callback',[SocialController::class,'callback'])->name('googlecallback');
         Route::get('/register', [RegisterController::class, 'index'])->name('register');
         Route::post('/register', [RegisterController::class, 'register'])->name('prosesregister');
-
-    Route::get('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/login', [LoginController::class, 'proseslogin'])->name('proseslogin');
+        Route::get('/login', [LoginController::class, 'login'])->name('login');
+        Route::post('/login', [LoginController::class, 'proseslogin'])->name('proseslogin');
     });
+// Logout
+Route::post('/logout',[LoginController::class,'logout'])->name('logout');
+
+

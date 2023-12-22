@@ -77,6 +77,7 @@ select option {
         <label for="jenis_pesanan">Jenis Pesanan:</label>
         <!-- Dropdown untuk Jenis Pesanan -->
         <select name="jenis_pesanan" id="jenis_pesanan" required>
+            <option value="laut">--Pilih--</option>
             <option value="laut">Laut</option>
             <option value="udara">Udara</option>
             <option value="darat">Darat</option>
@@ -233,6 +234,6 @@ select option {
                 });
             });
     });
-   
+
 </script>
 </html>

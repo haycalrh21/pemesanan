@@ -22,71 +22,8 @@ class HomeController extends Controller
     {
         $pesanans = Pesanan::all();
         $vendors = Vendor::all();
-
-        // Ambil data provinsi
-        $responseProvinsi = Http::get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
-        $provinsiData = $responseProvinsi->json();
-
-        // Ubah struktur data provinsi
-        $provinsiData = collect($provinsiData)->map(function ($provinsi) {
-            return [
-                'id' => $provinsi['id'],
-                'name' => $provinsi['name'],
-            ];
-        })->all();
-
-        // Initialize $kotaData
-        $kotaData = [];
-
-        // Initialize $provinceId and $provinceName
-        $provinceId = null;
-        $provinceName = null;
-
-        foreach ($pesanans as $pesanan) {
-            // Get the desired province ID from each Pesanan
-            $desiredProvinceId = $pesanan->province_id ?? null;
-
-            // Skip the Pesanan if province_id is not set
-            if (!$desiredProvinceId) {
-                continue;
-            }
-
-            // Ambil data kota dengan menyimpan province_id
-            $responseKota = Http::get("https://www.emsifa.com/api-wilayah-indonesia/api/regencies/{$desiredProvinceId}.json");
-            $kotaData = $responseKota->json();
-
-            // Ubah struktur data kota dan tambahkan province_id
-            $kotaData = collect($kotaData)->map(function ($kota) use ($desiredProvinceId) {
-                return [
-                    'id' => $kota['id'],
-                    'name' => $kota['name'],
-                    'provinceId' => $desiredProvinceId,
-                ];
-            })->all();
-
-            // Access data from $provinsiData based on the desired province ID
-            $selectedProvinceData = collect($provinsiData)->firstWhere('id', $desiredProvinceId);
-
-            if ($selectedProvinceData) {
-                // Assign values to $provinceId and $provinceName
-                $provinceId = $selectedProvinceData['id'];
-                $provinceName = $selectedProvinceData['name'];
-
-                // Do something with the province data...
-            } else {
-                // Handle the case when the desired province ID is not found
-                // You may want to show an error message or take other actions
-            }
-        }
-
-        // Check if $kotaData is empty before using it in the view
-        if (empty($kotaData)) {
-            // Do something if $kotaData is empty
-        }
-
-
-        // dd($provinsiData, $kotaData, $pesanans, $provinceId, $provinceName);
-        return view('home.layanan.index', compact('pesanans', 'provinsiData', 'vendors', 'kotaData'));
+        $pesanans = Pesanan::paginate(10);
+        return view('home.layanan.index', compact('pesanans', 'vendors'));
     }
 
 
