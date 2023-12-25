@@ -49,18 +49,18 @@ class PesananController extends Controller
                 'status' => 'required|in:free,berbayar',
                 'gambar_pesanan.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-    
+
             // Fetch names from the EMSIFA API
             $provinsiId = $request->input('lokasi_provinsi');
             $kotaId = $request->input('lokasi_kota');
             $kecamatanId = $request->input('lokasi_kecamatan');
             $kelurahanId = $request->input('lokasi_kelurahan');
-    
+
             $provinsi = $this->getNameFromAPI('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', $provinsiId);
             $kota = $this->getNameFromAPI("https://www.emsifa.com/api-wilayah-indonesia/api/regencies/{$provinsiId}.json", $kotaId);
             $kecamatan = $this->getNameFromAPI("https://www.emsifa.com/api-wilayah-indonesia/api/districts/{$kotaId}.json", $kecamatanId);
             $kelurahan = $this->getNameFromAPI("https://www.emsifa.com/api-wilayah-indonesia/api/villages/{$kecamatanId}.json", $kelurahanId);
-    
+
             // Simpan pesanan ke database
             $pesananData = [
                 'vendor_id' => $request->input('vendor_id'),
@@ -74,9 +74,9 @@ class PesananController extends Controller
                 'lokasi_kelurahan' => $kelurahan,
                 'status' => $request->input('status'),
             ];
-    
+
             $pesanan = Pesanan::create($pesananData);
-    
+
             // Proses unggahan gambar
             if ($request->hasFile('gambar_pesanan')) {
                 $gambarPaths = [];
@@ -87,7 +87,7 @@ class PesananController extends Controller
                 $pesanan->gambar_pesanan = $gambarPaths;
                 $pesanan->save();
             }
-    
+
             return redirect('/')->with('success', 'Pesanan berhasil dibuat!');
         } catch (\Exception $e) {
             // Tangkap pesan kesalahan dan log
@@ -95,7 +95,7 @@ class PesananController extends Controller
             return redirect('/')->with('error', 'Terjadi kesalahan. Silakan coba lagi.');
         }
     }
-    
+
 
 
     private function getNameFromAPI($url, $id)
