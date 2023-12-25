@@ -16,4 +16,14 @@ class Message extends Model
 public function user(){
     return $this->belongsTo(User::class);
 }
+
+public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    public function getAllMessages()
+{
+    return $this->replies()->orderBy('created_at')->get()->merge([$this])->sortBy('created_at');
+}
 }

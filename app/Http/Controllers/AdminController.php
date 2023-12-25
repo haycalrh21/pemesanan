@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
 public function index(){
-    return view('admin.index');
+    $userCount = User::count();
+    return view('admin.index', compact('userCount'));
 }
 
 
@@ -24,6 +25,26 @@ public function pesan(){
 $messages= Message::all();
 return view('admin.pesan.index', compact('messages'));
 
+}
+
+
+public function balesPesan(Request $request, $id)
+{
+    $message = Message::findOrFail($id);
+
+    // Validasi request jika diperlukan
+    $request->validate([
+        'adminReply' => 'required|string',
+    ]);
+
+    // Simpan balasan ke dalam tabel replies
+    $reply = $message->replies()->create([
+        'content' => $request->input('adminReply'),
+        'is_admin_reply' => true,
+    ]);
+
+    // Redirect atau lakukan tindakan lainnya
+    return redirect()->back()->with('success', 'Balasan berhasil dikirim!');
 }
 public function statusbayar(Request $request,$id){
     $pesanans= Pesanan::findorFail($id);

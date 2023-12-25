@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('replies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained(); // Menghubungkan dengan tabel users
-            $table->text('content'); // Isi pesan dari pengguna
+            $table->foreignId('message_id')->constrained();
+            $table->text('content');
+            $table->boolean('is_admin_reply')->default(false);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('replies');
     }
 };

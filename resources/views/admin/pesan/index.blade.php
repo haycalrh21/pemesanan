@@ -7,26 +7,35 @@
     <title>Halaman Pesan</title>
 </head>
 <body>
-@include("components.navbaradmin")
-<h1>halaman pesan</h1>
+    @include("components.navbaradmin")
+    <h1>Halaman Pesan</h1>
 
-<section>
-    <div>
-        @php
-            $previousUsername = null;
-        @endphp
+    <section>
+        <div>
+            @foreach ($messages as $message)
+            <p><strong>Pengguna:</strong> {{ $message->user->name }}</p>
+            <p><strong>Isi Pesan:</strong> {{ $message->content }}</p>
 
-        @foreach ($messages as $message)
-            @if ($message->user->name !== $previousUsername)
-                <p><strong>Pengguna:</strong> {{ $message->user->name }}</p>
-            @endif
-            {{-- <p><strong>Isi Pesan:</strong> {{ $message->content }}</p> --}}
+            @foreach ($message->replies as $reply)
+                @if ($reply->is_admin_reply)
+                    <p><strong>Admin:</strong> {{ $reply->content }}</p>
+                @else
+                    <p><strong>Pengguna:</strong> {{ $reply->content }}</p>
+                @endif
+            @endforeach
 
-            @php
-                $previousUsername = $message->user->name;
-            @endphp
+            {{-- Tambahkan formulir untuk admin membalas pesan --}}
+            <form action="{{ route('balespesan', ['id' => $message->id]) }}" method="post">
+                @csrf
+                <label for="adminReply">Balas Pesan:</label>
+                <textarea name="adminReply" id="adminReply" rows="3"></textarea>
+                <button type="submit">Kirim Balasan</button>
+            </form>
+            <hr>
         @endforeach
-    </div>
-</section>
+
+        </div>
+
+    </section>
 </body>
 </html>

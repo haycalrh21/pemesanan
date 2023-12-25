@@ -47,6 +47,7 @@ Route::middleware(['role:vendor'])->group(function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/pesan', [AdminController::class, 'pesan'])->name('pesan');
+    Route::post('/balespesan/{id}', [AdminController::class, 'balespesan'])->name('balespesan');
     Route::get('/datalayanan', [AdminController::class, 'layanan'])->name('datalayanan');
     Route::get('/datauser',[AdminController::class, 'user'])->name('datauser');
     Route::get('/datavendor',[AdminController::class, 'vendor'])->name('datavendor');
