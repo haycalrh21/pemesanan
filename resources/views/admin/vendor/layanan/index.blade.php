@@ -33,11 +33,10 @@
     <section>
         @include('components.navbaradmin')
         <div>
-            <h1>Halaman Data layanan    </h1>
+            <h1>Halaman Data layanan</h1>
         </div>
     </section>
     <section>
-
 
         <table class="table">
             <thead>
@@ -68,10 +67,22 @@
                         <td>{{ $pesanan->lokasi_kecamatan }}</td>
                         <td>{{ $pesanan->lokasi_kelurahan }}</td>
                         <td>{{ $pesanan->status }}</td>
+                        <td>
+                            <form id="statusForm{{ $pesanan->id }}" action="{{ route('statusbayar', ['id' => $pesanan->id]) }}" method="post">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="statusButton" style="background-color: {{ $pesanan->status == 'berbayar' ? 'red' : 'blue' }}; color: white;" {{ $pesanan->status == 'berbayar' ? 'disabled' : '' }}>
+                                    {{ $pesanan->status == 'berbayar' ? 'berbayar' : 'bayar' }}
+                                </button>
+                            </form>
+                        </td>
                     </tr>
+
+
                 @endforeach
             </tbody>
         </table>
+        {{ $pesanans->links() }}
     </section>
 </body>
 </html>

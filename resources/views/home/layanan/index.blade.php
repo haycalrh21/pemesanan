@@ -183,12 +183,19 @@
         @foreach ($pesanans as $pesanan)
 
 
+
         <div class="card">
             <h1 class="card-text">{{ $pesanan->nama_pesanan }}</h1>
 
             <p class="card-text">
                 Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}
+
+            <!-- Mengakses relasi vendor() -->
+            <p class="card-text">
+                Vendor: {{ $pesanan->vendor ? $pesanan->vendor->vendor : 'Tidak ada vendor' }}
             </p>
+
+
             <p class="card-text">
                 Lokasi kota: {{ $pesanan->lokasi_kota }}
             </p>
@@ -216,6 +223,8 @@
                 <button
                     onclick="window.location.href='{{ route('vendordetail', ['id' => $pesanan->id]) }}'">Lihat Detail</button>
             </div>
+
+
         </div>
 
 

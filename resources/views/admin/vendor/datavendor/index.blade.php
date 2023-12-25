@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data Vendor</title>
+    <title>Data User</title>
 </head>
 <body>
     <style>
@@ -38,13 +38,15 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>User ID</th>
+
                 <th>Nama Lengkap</th>
                 <th>Email</th>
-                <th>No Handphone</th>
+                <th>Role</th>
+                <th>Np Handphone</th>
                 <th>Alamat</th>
-                <th>Vendor</th>
-                <th>Aksi</th>
+                <th>Nama Vendor</th>
+
+
             </tr>
         </thead>
         <tbody>
@@ -52,15 +54,20 @@
                 <tr>
                     <td>{{ $vendor->id }}</td>
                     <td>{{ $vendor->user_id }}</td>
+
                     <td>{{ $vendor->name }}</td>
                     <td>{{ $vendor->email }}</td>
                     <td>{{ $vendor->nohp }}</td>
                     <td>{{ $vendor->alamat }}</td>
                     <td>{{ $vendor->vendor }}</td>
+
+
                 </tr>
             @endforeach
         </tbody>
     </table>
+    {{ $vendors->links() }}
+
 </section>
 </body>
 </html>

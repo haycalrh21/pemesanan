@@ -16,7 +16,7 @@ class Pesanan extends Model
 
 
     public function vendor(){
-        return $this->belongsTo(Vendor::class ,'vendor', 'id');
+        return $this->belongsTo(Vendor::class , 'vendor_id');
 
 
     }

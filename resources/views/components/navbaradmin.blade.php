@@ -104,6 +104,7 @@
                 <ul>
                     <li>
                         <a href="{{ route('admin.index') }}">Home</a>
+                        <a href="{{ route('pesan') }}">pesan</a>
 
 
                     </li>
@@ -113,6 +114,7 @@
                         <!-- Dropdown for Login -->
                         <div class="dropdown">
                             <a href="{{ route('datalayanan') }}">Data Layanan</a>
+                            <a href="{{ route('datauser') }}">Data User</a>
                             <a href="{{ route('datavendor') }}">Data Vendor</a>
                         </div>
                     </li>

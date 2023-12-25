@@ -5,10 +5,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\RegisterController;
+
 
 
 
@@ -21,6 +23,10 @@ Route::get('/test', function(){return view ('home.test');});
 
 Route::get('/layanan/{jenis_pesanan}', [HomeController::class, 'layanansort'])->name('layananaja');
 Route::get('/vendor/layanan/{id?}', [PesananController::class, 'vendordetail'])->name('vendordetail');
+
+Route::get('/pesan',[MessageController::class,'index'])->name('bikinpesan');
+Route::get('/pesan/layananpesan',[MessageController::class,'bikinpesan'])->name('layananpesan');
+Route::post('/pesan',[MessageController::class,'kirim'])->name('kirimpesan');
 
 
 Route::middleware(['role:user'])->group(function () {
@@ -40,8 +46,12 @@ Route::middleware(['role:vendor'])->group(function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth:admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/pesan', [AdminController::class, 'pesan'])->name('pesan');
     Route::get('/datalayanan', [AdminController::class, 'layanan'])->name('datalayanan');
+    Route::get('/datauser',[AdminController::class, 'user'])->name('datauser');
     Route::get('/datavendor',[AdminController::class, 'vendor'])->name('datavendor');
+    Route::patch('/datalayanan/{id}',[AdminController::class, 'statusbayar'])->name('statusbayar');
+    Route::patch('/datavendor/{id}',[AdminController::class, 'statusvendor'])->name('statusvendor');
 });
 
 
