@@ -18,13 +18,22 @@ class HomeController extends Controller
     }
 
 
-    public function layanan()
+    public function layanan(Request $request)
     {
-        $pesanans = Pesanan::all();
+        $keyword = $request->input('keyword');
+
+        $pesanans = Pesanan::when($keyword, function ($query, $keyword) {
+            return $query->where('nama_pesanan', 'like', "%$keyword%");
+        })->paginate(10);
+
+        if ($request->ajax()) {
+            return response()->json($pesanans);
+        }
+
         $vendors = Vendor::all();
-        $pesanans = Pesanan::paginate(10);
         return view('home.layanan.index', compact('pesanans', 'vendors'));
     }
+
 
 
 
@@ -46,17 +55,30 @@ class HomeController extends Controller
     return view($viewName, compact('pesanan', 'jenis_pesanan','vendors'));
     }
 
-    public function search(Request $request)
-    {
-        $keyword = $request->input('keyword');
 
-        // Menggunakan relasi antara Pesanan dan Vendor (asumsikan relasi bernama 'vendor')
-        $pesanans = Pesanan::whereHas('vendor', function ($query) use ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%')
-                  ->orWhere('email', 'like', '%' . $keyword . '%');
-        })->orWhere('nama_pesanan', 'like', '%' . $keyword . '%')->get();
 
-        return view('home.cari', ['pesanans' => $pesanans, 'keyword' => $keyword]);
+public function search(Request $request)
+{
+    $keyword = $request->input('keyword');
+
+    // Jika keyword tidak ada, redirect kembali ke halaman sebelumnya
+    if (!$keyword) {
+        return redirect()->back();
     }
+
+    // Menggunakan relasi antara Pesanan dan Vendor (asumsikan relasi bernama 'vendor')
+    $pesanans = Pesanan::whereHas('vendor', function ($query) use ($keyword) {
+        $query->where('name', 'like', '%' . $keyword . '%')
+              ->orWhere('email', 'like', '%' . $keyword . '%');
+    })->orWhere('nama_pesanan', 'like', '%' . $keyword . '%')->get();
+
+    // Jika tidak ada hasil pencarian, kembalikan ke halaman sebelumnya
+    if ($pesanans->isEmpty()) {
+        return redirect()->back()->with('message', 'Tidak ada hasil yang ditemukan untuk kata kunci: ' . $keyword);
+    }
+
+    return view('home.cari', ['pesanans' => $pesanans, 'keyword' => $keyword]);
+}
+
 
 }
