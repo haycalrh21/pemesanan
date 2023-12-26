@@ -12,7 +12,9 @@ class AdminController extends Controller
 {
 public function index(){
     $userCount = User::count();
-    return view('admin.index', compact('userCount'));
+    $orderCount = Pesanan::count();
+    $vendorCount = Vendor::count();
+    return view('admin.index', compact('userCount','orderCount','vendorCount'));
 }
 
 

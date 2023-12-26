@@ -66,13 +66,21 @@ button:hover {
     <input type="email" name="email" placeholder="Masukkan email yang sedang login" value="{{auth()->user()->email}}" required>
 
     <label for="name">Nomor Hape:</label>
-    <input type="text" name="nohp" placeholder="Masukkan nomor handphone" required>
+    <input type="text" id="nohp" name="nohp" placeholder="Masukkan nomor handphone" required>
+
 
     <label for="name">Masukkan Nama Vendor:</label>
     <input type="text" name="vendor" placeholder="Masukkan nama vendor" required>
 
     <button type="submit">Daftar sebagai Vendor</button>
 </form>
-
+<script>
+    document.getElementById('nohp').addEventListener('input', function(event) {
+      // Hanya tambahkan awalan +62 jika belum ada
+      if (!event.target.value.startsWith('+62')) {
+        event.target.value = '+62' + event.target.value;
+      }
+    });
+    </script>
 </body>
 </html>

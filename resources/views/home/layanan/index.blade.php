@@ -213,11 +213,11 @@
             <!-- Tombol-tombol -->
             <div class="card-buttons">
                 <!-- Tombol pesan -->
-                @if($vendors->count() > 0)
-                <button onclick="window.location.href='https://wa.me/{{ $vendors[0]->nohp }}'">Pesan</button>
-                @else
+                @if($pesanan->vendor)
+                <button onclick="window.location.href='https://wa.me/{{ $pesanan->vendor->nohp }}'">Pesan</button>
+            @else
                 <p>Tidak ada vendor.</p>
-                @endif
+            @endif
 
                 <!-- Tombol lihat detail -->
                 <button
