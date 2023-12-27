@@ -39,9 +39,12 @@ return new class extends Migration
             $table->string('lokasi_kota');
             $table->string('lokasi_kecamatan');
             $table->string('lokasi_kelurahan');
+            $table->text('deskripsi');
 
-            // Status pesanan (free, berbayar)
-            $table->string('status')->default('free');
+
+
+            $table->enum('status', ['free', 'berbayar'])->default('free');
+            $table->enum('publish', ['publish', 'nonpublish'])->default('publish')->nullable();
 
             $table->timestamps();
         });

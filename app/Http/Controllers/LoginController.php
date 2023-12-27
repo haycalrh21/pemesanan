@@ -27,7 +27,7 @@ class LoginController extends Controller
             $token = JWTAuth::fromUser($user);
 
             if ($role === 'vendor') {
-                return redirect()->route('vendor.index')->header('Authorization', 'Bearer ' . $token);
+                return redirect()->route('profile')->header('Authorization', 'Bearer ' . $token);
             } elseif ($role === 'user') {
                 return redirect('/')->header('Authorization', 'Bearer ' . $token);
             }

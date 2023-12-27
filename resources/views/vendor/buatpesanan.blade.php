@@ -52,12 +52,19 @@ select {
     box-sizing: border-box;
 }
 
-/* Untuk membuat option lebih besar, rounded, dan dengan jarak antara option */
+
 select option {
     padding: 10px;
     border-radius: 5px;
-    margin-bottom: 5px; /* Tambahkan margin-bottom sesuai keinginan untuk memberikan jarak */
+    margin-bottom: 5px;
 }
+
+textarea {
+        width: 100%;
+        height: 100px;
+        resize: vertical;
+        overflow-y: scroll;
+    }
 </style>
 <body>
     <section>
@@ -82,6 +89,10 @@ select option {
             <option value="udara">Udara</option>
             <option value="darat">Darat</option>
         </select><br>
+
+
+
+
 
         <label for="jenis_detail">Jenis Detail:</label>
         <!-- Dropdown untuk Jenis Detail -->
@@ -116,9 +127,16 @@ select option {
         </select><br>
 
 
+
         <label for="gambar_pesanan">Gambar Pesanan:</label>
         <input type="file" name="gambar_pesanan[]" accept="image/*" multiple><br>
+
+        <label for="deskripsi">Deskripsi:</label>
+        <textarea name="deskripsi" rows="4" cols="50" required></textarea><br>
+
         <button type="submit">Proses Pesanan</button><br>
+
+
 
         <label for="status" style="display: none;">Status:</label>
         <select name="status" required style="visibility: hidden;">
@@ -126,6 +144,13 @@ select option {
             <option value="free">Free</option>
             <option value="berbayar">Berbayar</option>
         </select><br>
+        <label for="publish" hidden>Status:</label>
+<select name="publish" required hidden>
+    <option value="publish" selected>--Silahkan Pilih--</option>
+    <option value="publish">Publish</option>
+    <option value="nonpublish">Non-Publish</option>
+</select><br>
+
 
     </form>
 </body>
@@ -140,19 +165,28 @@ select option {
         // Menyesuaikan opsi berdasarkan jenis_pesanan yang dipilih
         switch(this.value) {
             case 'laut':
-                jenisDetailSelect.add(new Option('Kapal Kontainer', 'kapal kontainer'));
-                jenisDetailSelect.add(new Option('Yacht', 'yacht'));
+                jenisDetailSelect.add(new Option('Kapal Kontainer', 'Kapal Kontainer'));
+                jenisDetailSelect.add(new Option('Kapal Barang Umum ', 'Kapal Barang Umum'));
+                jenisDetailSelect.add(new Option('Kapal Pesiar', 'Kapal Pesiar'));
+                jenisDetailSelect.add(new Option('Kapal Kargo Beratr', 'Kapal Kargo Berat'));
+                jenisDetailSelect.add(new Option('Kapal Ferry', 'Kapal Ferry'));
+
+                jenisDetailSelect.add(new Option('Yacht', 'Yacht'));
+
                 // Tambahkan opsi lain sesuai kebutuhan
                 break;
             case 'udara':
-                jenisDetailSelect.add(new Option('Jet Pribadi', 'jet pribadi'));
-                jenisDetailSelect.add(new Option('Pesawat Kargo', 'pesawat kargo'));
+                jenisDetailSelect.add(new Option('Jet Pribadi', 'Jet Pribadi'));
+                jenisDetailSelect.add(new Option('Pesawat Kargo', 'Pesawat Kargo'));
                 // Tambahkan opsi lain sesuai kebutuhan
                 break;
             case 'darat':
-                jenisDetailSelect.add(new Option('Alat Berat', 'alat berat'));
-                jenisDetailSelect.add(new Option('Mobil', 'mobil'));
-                jenisDetailSelect.add(new Option('Bak Kargo', 'bak kargo'));
+                jenisDetailSelect.add(new Option('Alat Berat', 'Alat Berat'));
+                jenisDetailSelect.add(new Option('Mobil', 'Mobil'));
+                jenisDetailSelect.add(new Option('Bak Kargo', 'Bak Kargo'));
+                jenisDetailSelect.add(new Option('Bus Pariwisata', 'Bus Pariwisata'));
+                jenisDetailSelect.add(new Option('Truck Gandeng 1', 'Truck Gandeng 1'));
+                jenisDetailSelect.add(new Option('Truck Gandeng 2', 'Truck Gandeng 2'));
                 // Tambahkan opsi lain sesuai kebutuhan
                 break;
             default:

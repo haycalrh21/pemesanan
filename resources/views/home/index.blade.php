@@ -6,71 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/home/index.css') }}">
+
     <style>
-        body {
-            margin-top: 60px;
-            margin-bottom: 60px;
-        }
-        body.dark-mode {
-            background-color: #333;
-            color: white;
-        }
-
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            justify-content: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            display: flex;
-            flex-direction: column;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 250px;
-        }
-
-        .card h1 {
-            margin-bottom: 10px;
-            color: #000;
-        }
-
-        .card img {
-            width: 70%;
-            max-height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            align-self: center;
-        }
-
-        .card button {
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background-color: #3498db;
-            padding: 10px 20px;
-            color: #ffffff;
-            font-size: 16px;
-            margin-top: auto;
-        }
-
-        .dark-mode-btn {
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .dark-mode-btn:hover {
-            background-color: #777;
-        }
-
 
     </style>
     <title>Home</title>

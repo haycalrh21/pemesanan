@@ -11,7 +11,7 @@ class Pesanan extends Model
     protected $fillable = [
         'vendor_id', 'user_id', 'jenis_pesanan', 'jenis_detail', 'nama_pesanan',
         'gambar_pesanan', 'lokasi_provinsi', 'lokasi_kota', 'lokasi_kecamatan',
-        'lokasi_kelurahan', 'status','deskripsi'
+        'lokasi_kelurahan', 'status','deskripsi','publish'
     ];
 
 

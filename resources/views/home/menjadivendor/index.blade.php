@@ -14,9 +14,9 @@ h2 {
 
 form {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Membuat dua kolom dengan lebar yang sama */
-    gap: 10px; /* Jarak antar elemen dalam grid */
-    max-width: 800px; /* Atur lebar maksimum form */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -29,11 +29,11 @@ input {
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%; /* Agar input memenuhi lebar kolom */
+    width: 100%;
 }
 
 button {
-    grid-column: span 2; /* Membuat tombol memanjang melintasi kedua kolom */
+    grid-column: span 2;
     padding: 10px;
     background-color: #3498db;
     color: #ffffff;
@@ -54,26 +54,35 @@ button:hover {
 </section>
 
 <h2>Form Pendaftaran Vendor</h2>
-<form action="{{ route('daftar') }}" method="post" class="rounded-form">
+<form action="{{ route('daftar') }}" method="post" class="rounded-form" enctype="multipart/form-data">
     @csrf
     <label for="name">Nama Lengkap:</label>
-    <input type="text" name="name" value="{{auth()->user()->name}}" required>
+    <input type="text" name="name" value="{{ auth()->user()->name }}" required>
 
     <label for="name">Alamat:</label>
     <input type="text" name="alamat" placeholder="Masukkan alamat" required>
 
     <label for="email">Email:</label>
-    <input type="email" name="email" placeholder="Masukkan email yang sedang login" value="{{auth()->user()->email}}" required>
+    <input type="email" name="email" placeholder="Masukkan email yang sedang login" value="{{ auth()->user()->email }}" required>
 
-    <label for="name">Nomor Hape:</label>
+    <label for="nohp">Nomor Hape:</label>
     <input type="text" id="nohp" name="nohp" placeholder="Masukkan nomor handphone" required>
 
-
-    <label for="name">Masukkan Nama Vendor:</label>
+    <label for="vendor">Masukkan Nama Vendor:</label>
     <input type="text" name="vendor" placeholder="Masukkan nama vendor" required>
+
+    <label for="gambar_ktp">Gambar KTP:</label>
+    <input type="file" name="gambar_ktp" accept="image/*" required>
+
+    <label for="gambar_logo">Gambar Logo:</label>
+    <input type="file" name="gambar_logo" accept="image/*" required>
+
+    <label for="gambar_banner">Gambar Banner:</label>
+    <input type="file" name="gambar_banner" accept="image/*" required>
 
     <button type="submit">Daftar sebagai Vendor</button>
 </form>
+
 <script>
     document.getElementById('nohp').addEventListener('input', function(event) {
       // Hanya tambahkan awalan +62 jika belum ada
@@ -81,6 +90,6 @@ button:hover {
         event.target.value = '+62' + event.target.value;
       }
     });
-    </script>
+</script>
 </body>
 </html>

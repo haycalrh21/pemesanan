@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('nohp');
             $table->string('alamat');
             $table->string('vendor');
+            $table->string('gambar_ktp');
+
+            $table->string('gambar_logo')->nullable();
+            $table->string('gambar_banner')->nullable();
+
+
 
             $table->rememberToken();
             $table->timestamps();

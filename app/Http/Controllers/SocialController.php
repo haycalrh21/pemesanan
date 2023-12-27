@@ -32,7 +32,7 @@ class SocialController extends Controller
                     'name' => $socialUser->getName(),
                     'email' => $socialUser->getEmail(),
                     'role' => 'user',
-                    'password' => bcrypt(''),
+                    'password' => bcrypt(''), // Ini sebaiknya menggunakan fitur autentikasi Laravel yang sesuai
                 ]);
             }
 
@@ -40,12 +40,17 @@ class SocialController extends Controller
             auth()->login($user);
 
             // Redirect atau proses lanjutan
-            return redirect('/');
+            if ($user->role === 'vendor' && $user->vendor) {
+                return redirect()->route('profile', ['vendorId' => $user->vendor->id]);
+            } else {
+                return redirect()->route('/');
+            }
         } catch (\Exception $e) {
             $errorMessage = 'Error handling Google callback: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine();
             Log::error($errorMessage);
             return redirect()->route('login')->with('error', 'Login failed. An error occurred: ' . $errorMessage);
         }
     }
+
 
 }

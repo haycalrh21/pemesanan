@@ -17,15 +17,15 @@ use App\Http\Controllers\RegisterController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/layanan', [HomeController::class, 'layanan'])->name('semualayanan');
 
-Route::get('/about',function (){return view('home.about');});
+// Route::get('/about',function (){return view('home.about');});
 Route::get('/search',[HomeController::class,'search'])->name('carilayanan');
-Route::get('/test', function(){return view ('home.test');});
+// Route::get('/test', function(){return view ('home.test');});
 
 Route::get('/layanan/{jenis_pesanan}', [HomeController::class, 'layanansort'])->name('layananaja');
 Route::get('/vendor/layanan/{id?}', [PesananController::class, 'vendordetail'])->name('vendordetail');
 
 Route::get('/pesan',[MessageController::class,'index'])->name('bikinpesan');
-Route::get('/pesan/layananpesan',[MessageController::class,'bikinpesan'])->name('layananpesan');
+// Route::get('/pesan/layananpesan',[MessageController::class,'bikinpesan'])->name('layananpesan');
 Route::post('/pesan',[MessageController::class,'kirim'])->name('kirimpesan');
 
 

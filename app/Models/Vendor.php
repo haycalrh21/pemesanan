@@ -26,6 +26,10 @@ class Vendor extends Authenticatable implements JWTSubject
         'alamat',
         'nohp',
         'vendor',
+        'gambar_ktp',
+        'gambar_logo',
+        'gambar_banner',
+
 
     ];
 

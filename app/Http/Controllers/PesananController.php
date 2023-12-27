@@ -46,6 +46,8 @@ class PesananController extends Controller
                 'lokasi_kota' => 'required',
                 'lokasi_kecamatan' => 'required',
                 'lokasi_kelurahan' => 'required',
+                'deskripsi' => 'required',
+                'publish' => 'required',
                 'status' => 'required|in:free,berbayar',
                 'gambar_pesanan.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
@@ -72,6 +74,9 @@ class PesananController extends Controller
                 'lokasi_kota' => $kota,
                 'lokasi_kecamatan' => $kecamatan,
                 'lokasi_kelurahan' => $kelurahan,
+                'deskripsi' => $request->input('deskripsi'),
+                'publish' => $request->input('publish'),
+
                 'status' => $request->input('status'),
             ];
 

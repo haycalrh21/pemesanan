@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Vendor;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,18 +19,24 @@ class VendorController extends Controller
  return view('vendor.index', ['pesanans' => $pesanans]);
     }
 
-    public function profile(){
+    public function profile() {
+        // Mengambil user yang sedang login
         $user = Auth::user();
-        $vendor = $user->vendor;
 
-        // Periksa apakah vendor ditemukan
-        if ($vendor) {
-            return view('vendor.profile', compact('vendor'));
+        // Memastikan user memiliki vendor
+        if ($user->vendor) {
+            $vendor = $user->vendor;
+
+            // Inisialisasi variabel $folderPath
+            $folderPath = "vendors/{$user->vendor->id}";
+
+            return view('vendor.profile', compact('vendor', 'folderPath'));
         } else {
             // Handle jika vendor tidak ditemukan, misalnya, redirect dengan pesan kesalahan
             return redirect()->route('profile')->with('error', 'Vendor profile not found');
         }
     }
+
 
     public function delete($id){
 
