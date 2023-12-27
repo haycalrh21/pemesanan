@@ -11,15 +11,14 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+
             background-color: #1a0909;
         }
 
         .container {
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: auto 50px auto; /* Menggunakan "auto" untuk mengatur tinggi sejalan dengan konten */
+            grid-template-rows: auto 150px auto; /* Menggunakan "auto" untuk mengatur tinggi sejalan dengan konten */
             gap: 20px; /* Memberikan jarak antar elemen */
             justify-items: center; /* Meletakkan elemen di tengah kolom */
             align-items: center; /* Meletakkan elemen di tengah baris */
@@ -28,7 +27,7 @@
 
         .section {
             width: 100%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 20px;
             color: #1a0909;
@@ -73,16 +72,19 @@
             <!-- Left Section (Logo) -->
             <div>
                 <img src="{{ asset("storage/$folderPath/gambar_logo.jpg") }}" alt="Logo" class="logo">
+                <h1>
+                    {{ $vendor->vendor }}
+                </h1>
             </div>
         </section>
 
         <section class="section">
             <!-- Right Section -->
-            <p>Name: {{ $vendor->name }}</p>
+
             <p>Email: {{ $vendor->email }}</p>
             <p>No HP: {{ $vendor->nohp }}</p>
             <p>Alamat: {{ $vendor->alamat }}</p>
-            <p>Vendor: {{ $vendor->vendor }}</p>
+
         </section>
     </div>
 </body>
