@@ -59,6 +59,10 @@ class Vendor extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function pesanans()
+{
+    return $this->hasMany(Pesanan::class, 'vendor_id');
+}
 
     protected $casts = [
         'email_verified_at' => 'datetime',

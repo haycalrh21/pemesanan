@@ -34,6 +34,8 @@
         .dropdown-item:hover {
             background-color: #f1f1f1;
         }
+
+
     </style>
 
 <script>
@@ -113,70 +115,131 @@ function displaySearchResults(data) {
     </section>
 
     <section class="card-container">
-        <!-- Loop untuk setiap pesanan -->
+        <!-- Loop untuk 8 pesanan berbayar -->
+        @php $count = 0; @endphp
         @foreach ($pesanans as $pesanan)
-        <div class="card">
-            <h1 class="card-text">{{ $pesanan->nama_pesanan }}</h1>
-            <p class="card-text">
-                Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}
-            </p>
-            <!-- Mengakses relasi vendor() -->
-            <p class="card-text">
-                Vendor: {{ $pesanan->vendor ? $pesanan->vendor->vendor : 'Tidak ada vendor' }}
-            </p>
-            <p class="card-text">
-                Lokasi kota: {{ $pesanan->lokasi_kota }}
-            </p>
-            <!-- Tampilkan gambar pertama -->
-            @if ($pesanan->gambar_pesanan)
-            <div class="card-img-top">
-                @php
-                $firstImage = json_decode($pesanan->gambar_pesanan)[0];
-                @endphp
-                <img src="{{ asset('storage/' . $firstImage) }}" alt="Gambar Pesanan">
-            </div>
-            @endif
-            <!-- Tombol-tombol -->
-            <div class="card-buttons">
-                <!-- Tombol pesan -->
-                @if($pesanan->vendor)
-                <button onclick="window.location.href='https://wa.me/{{ $pesanan->vendor->nohp }}'">Pesan</button>
-                @else
-                <p>Tidak ada vendor.</p>
+            @if($pesanan->publish == 'publish' && $pesanan->status == 'berbayar')
+                @php $count++; @endphp
+                @if($count <= 8) <!-- Hanya tampilkan 8 pesanan berbayar -->
+                    <div class="card">
+                        <!-- Konten kartu -->
+                        <h1 class="card-text">{{ $pesanan->nama_pesanan }}</h1>
+                        <p class="card-text">
+                            Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}
+                        </p>
+                        <p class="card-text">
+                            Vendor:
+                            @if ($pesanan->vendor)
+                                <a href="{{ route('company', ['id' => $pesanan->vendor->id]) }}" class="vendor-link">
+                                    {{ $pesanan->vendor->vendor }}
+                                </a>
+                            @else
+                                Tidak ada vendor
+                            @endif
+                        </p>
+
+                        <p class="card-text">
+                            Lokasi kota: {{ $pesanan->lokasi_kota }}
+                        </p>
+                        <!-- Tampilkan gambar pertama -->
+                        @if ($pesanan->gambar_pesanan)
+                            <div class="card-img-top">
+                                @php
+                                    $firstImage = json_decode($pesanan->gambar_pesanan)[0];
+                                @endphp
+                                <img src="{{ asset('storage/' . $firstImage) }}" alt="Gambar Pesanan">
+                            </div>
+                        @endif
+                        <!-- Tombol-tombol -->
+                        <div class="card-buttons">
+                            @if($pesanan->vendor)
+                                <button onclick="window.location.href='https://wa.me/{{ $pesanan->vendor->nohp }}'">Pesan</button>
+                            @else
+                                <p>Tidak ada vendor.</p>
+                            @endif
+                            <button onclick="window.location.href='{{ route('vendordetail', ['nama_pesanan_id' => $pesanan->nama_pesanan . '_id_' . $pesanan->id]) }}'">Lihat Detail</button>
+                        </div>
+                    </div>
                 @endif
-                <!-- Tombol lihat detail -->
-                <button onclick="window.location.href='{{ route('vendordetail', ['id' => $pesanan->id]) }}'">Lihat Detail</button>
-            </div>
-        </div>
+            @endif
+        @endforeach
+
+        <!-- Loop untuk 2 pesanan gratis -->
+        @foreach ($pesanans as $pesanan)
+            @if($pesanan->publish == 'publish' && $pesanan->status == 'free')
+                <div class="card">
+                    <!-- Konten kartu -->
+                    <h1 class="card-text">{{ $pesanan->nama_pesanan }}</h1>
+                    <p class="card-text">
+                        Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}
+                    </p>
+                    <p class="card-text">
+                        Vendor:
+                        @if ($pesanan->vendor)
+                        <a href="{{ route('company', ['id' => $pesanan->vendor->id]) }}" style="cursor: pointer; color: black; text-decoration: none;">
+                            {{ $pesanan->vendor->vendor }}
+                        </a>
+
+                        @else
+                            Tidak ada vendor
+                        @endif
+                    </p>
+                    <p class="card-text">
+                        Lokasi kota: {{ $pesanan->lokasi_kota }}
+                    </p>
+                    <!-- Tampilkan gambar pertama -->
+                    @if ($pesanan->gambar_pesanan)
+                        <div class="card-img-top">
+                            @php
+                                $firstImage = json_decode($pesanan->gambar_pesanan)[0];
+                            @endphp
+                            <img src="{{ asset('storage/' . $firstImage) }}" alt="Gambar Pesanan">
+                        </div>
+                    @endif
+                    <!-- Tombol-tombol -->
+                    <div class="card-buttons">
+                        @if($pesanan->vendor)
+                            <button onclick="window.location.href='https://wa.me/{{ $pesanan->vendor->nohp }}'">Pesan</button>
+                        @else
+                            <p>Tidak ada vendor.</p>
+                        @endif
+                        <button onclick="window.location.href='{{ route('vendordetail', ['nama_pesanan_id' => $pesanan->nama_pesanan . '_id_' . $pesanan->id]) }}'">Lihat Detail</button>
+                    </div>
+                </div>
+            @endif
         @endforeach
     </section>
+
+
+
 
     <!-- Tambahkan baris berikut untuk menampilkan pagination -->
     <div>
         <ul class="pagination">
             {{-- Previous Page Link --}}
-            @if ($pesanans->onFirstPage())
-            <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                <span aria-hidden="true">&laquo;</span>
-            </li>
+            @if ($pesanans->currentPage() == 1)
+                <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
+                    <span aria-hidden="true">&laquo;</span>
+                </li>
             @else
-            <li>
-                <a href="{{ $pesanans->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')">&laquo;</a>
-            </li>
+                <li>
+                    <a href="{{ $pesanans->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')">&laquo;</a>
+                </li>
             @endif
 
             {{-- Next Page Link --}}
             @if ($pesanans->hasMorePages())
-            <li>
-                <a href="{{ $pesanans->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')">&raquo;</a>
-            </li>
+                <li>
+                    <a href="{{ $pesanans->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')">&raquo;</a>
+                </li>
             @else
-            <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
-                <span aria-hidden="true">&raquo;</span>
-            </li>
+                <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
+                    <span aria-hidden="true">&raquo;</span>
+                </li>
             @endif
         </ul>
     </div>
+
 </body>
 
 </html>

@@ -127,10 +127,24 @@
                     @endforeach
                 </div>
 
-                <button onclick="deletePesanan({{ $pesanan->id }})">Hapus</button>
+                <form action="{{ $pesanan->publish === 'publish' ? route('sembunyikan', ['id' => $pesanan->id]) : route('tampilkan', ['id' => $pesanan->id]) }}" method="post" style="display: inline;">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" onclick="return confirm('{{ $pesanan->publish === 'publish' ? 'Apakah Anda yakin ingin menyembunyikan iklan ini?' : 'Apakah Anda yakin ingin menampilkan iklan ini?' }}')">
+                        {{ $pesanan->publish === 'publish' ? 'Sembunyikan Iklan' : 'Tampilkan Iklan' }}
+                    </button>
+                </form>
+                <form action="{{ route('deleteiklan', ['id' => $pesanan->id]) }}" method="post" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus iklan ini?')">
+                        Hapus Iklan
+                    </button>
+                </form>
 
 
-                <button ">Ubah iklan</button>
+
+
 
 
 
@@ -169,29 +183,8 @@
     }
 
 
-    function deletePesanan(id) {
-    if (confirm('Apakah Anda yakin ingin menghapus iklan ini?')) {
-        fetch(`/delete/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            // Handle response atau redirect ke halaman lain jika diperlukan
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-}
+
+
 
 </script>
 

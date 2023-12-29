@@ -22,7 +22,10 @@ Route::get('/search',[HomeController::class,'search'])->name('carilayanan');
 // Route::get('/test', function(){return view ('home.test');});
 
 Route::get('/layanan/{jenis_pesanan}', [HomeController::class, 'layanansort'])->name('layananaja');
-Route::get('/vendor/layanan/{id?}', [PesananController::class, 'vendordetail'])->name('vendordetail');
+Route::get('/company/{id}',[HomeController::class,'company'])->name('company');
+
+Route::get('/vendor/layanan/{nama_pesanan_id}', [PesananController::class, 'vendordetail'])->name('vendordetail');
+
 
 Route::get('/pesan',[MessageController::class,'index'])->name('bikinpesan');
 // Route::get('/pesan/layananpesan',[MessageController::class,'bikinpesan'])->name('layananpesan');
@@ -35,8 +38,10 @@ Route::middleware(['role:user'])->group(function () {
 });
 
 Route::middleware(['role:vendor'])->group(function () {
-    Route::get('/vendors', [VendorController::class,'index'])->name('vendor.index');
+    // Route::get('/vendorss', [VendorController::class,'index'])->name('vendor.index');
     Route::delete('/delete/{id}',[VendorController::class,'delete'])->name('deleteiklan');
+    Route::patch('/sembunyikan/{id}',[VendorController::class,'sembunyikan'])->name('sembunyikan');
+    Route::patch('/tampilkan/{id}',[VendorController::class,'tampilkan'])->name('tampilkan');
     Route::get('/form',[PesananController::class,'index'])->name('formpesanan');
     Route::post('/form',[PesananController::class,'form'])->name('prosespesanan');
     Route::get('/vendor/layanan',[PesananController::class,'vendorlayanan'])->name('vendorlayanan');

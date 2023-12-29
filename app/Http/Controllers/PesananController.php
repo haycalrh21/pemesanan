@@ -18,19 +18,23 @@ class PesananController extends Controller
         return view('vendor.buatpesanan');
 }
 
+public function vendordetail($nama_pesanan_id) {
 
-    public function vendordetail($id){
+    // Pisahkan $nama_pesanan_id menjadi $nama_pesanan dan $id
+    list($nama_pesanan, $id) = explode('_id_', $nama_pesanan_id);
 
-        $pesanan = Pesanan::find($id);
+    $pesanan = Pesanan::where('nama_pesanan', $nama_pesanan)->where('id', $id)->first();
 
-        // Jika pesanan tidak ditemukan, bisa menangani dengan redirect atau menampilkan pesan error
-        if (!$pesanan) {
-            return redirect()->route('vendordetail')->with('error', 'Pesanan tidak ditemukan.');
-        }
-
-        // Kirim data pesanan ke view detail
-        return view('home.layanan.detail.index', ['pesanan' => $pesanan]);
+    // Jika pesanan tidak ditemukan, bisa menangani dengan redirect atau menampilkan pesan error
+    if (!$pesanan) {
+        return redirect()->route('vendordetail')->with('error', 'Pesanan tidak ditemukan.');
     }
+
+    // Kirim data pesanan ke view detail
+    return view('home.layanan.detail.index', ['pesanan' => $pesanan]);
+}
+
+
 
 
     public function form(Request $request)

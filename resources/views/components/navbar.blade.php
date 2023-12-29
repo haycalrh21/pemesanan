@@ -83,7 +83,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('profile') }}">Company</a>
-                                <a class="dropdown-item" href="{{ route('vendor.index') }}">Iklan Layanan</a>
+                                {{-- <a class="dropdown-item" href="{{ route('vendor.index') }}">Iklan Layanan</a> --}}
                                 <a class="dropdown-item" href="{{ route('formpesanan') }}">Form Layanan</a>
                             </div>
                         </li>

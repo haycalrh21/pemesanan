@@ -109,6 +109,7 @@
             }
         }
     </style>
+
 </head>
 
 @include('components.navbar')
@@ -126,7 +127,6 @@
                 <h1>
                     {{ $vendor->vendor }}
                 </h1>
-                <button>ubah profile</button>
             </div>
         </section>
 
@@ -141,50 +141,57 @@
 
         <section class="card-container">
             @foreach ($pesanans as $pesanan)
-            @if ($pesanan->user_id === $userId)
-            <div class="card">
-                <h1 class="card-text"> {{ $pesanan->nama_pesanan }}</h1>
-                <p class="card-text">Jenis Layanan: {{ $pesanan->jenis_pesanan }}</p>
-                <p class="card-text">Jenis Detail Layanan: {{ $pesanan->jenis_detail }}</p>
-                <p class="card-text">Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}</p>
-                <p class="card-text">Lokasi Kota: {{ $pesanan->lokasi_kota }}</p>
+                <div class="card">
+                    <h1 class="card-text"> {{ $pesanan->nama_pesanan }}</h1>
+                    <p class="card-text">Jenis Layanan: {{ $pesanan->jenis_pesanan }}</p>
+                    <p class="card-text">Jenis Detail Layanan: {{ $pesanan->jenis_detail }}</p>
+                    <p class="card-text">Lokasi Provinsi: {{ $pesanan->lokasi_provinsi }}</p>
+                    <p class="card-text">Lokasi Kota: {{ $pesanan->lokasi_kota }}</p>
 
-                <div id="carouselExample{{ $pesanan->id }}" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @php
-                        $gambarPesanan = json_decode($pesanan->gambar_pesanan);
-                        @endphp
-                        @foreach ($gambarPesanan as $index => $gambar)
-                        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                            <img src="{{ asset('storage/' . $gambar) }}" class="d-block w-100" alt="Gambar Pesanan">
+                    <div id="carouselExample{{ $pesanan->id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @php
+                                $gambarPesanan = json_decode($pesanan->gambar_pesanan);
+                            @endphp
+                            @foreach ($gambarPesanan as $index => $gambar)
+                                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                    <img src="{{ asset('storage/' . $gambar) }}" class="d-block w-100" alt="Gambar Pesanan">
+                                </div>
+                            @endforeach
                         </div>
-                        @endforeach
+
+                        @if(Auth::check() && Auth::user()->role === 'vendor' && Auth::user()->id === $pesanan->user_id)
+                        <form action="{{ $pesanan->publish === 'publish' ? route('sembunyikan', ['id' => $pesanan->id]) : route('tampilkan', ['id' => $pesanan->id]) }}" method="post" style="display: inline;">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" onclick="return confirm('{{ $pesanan->publish === 'publish' ? 'Apakah Anda yakin ingin menyembunyikan iklan ini?' : 'Apakah Anda yakin ingin menampilkan iklan ini?' }}')">
+                                {{ $pesanan->publish === 'publish' ? 'Sembunyikan Iklan' : 'Tampilkan Iklan' }}
+                            </button>
+                        </form>
+                    @endif
+
+
+                    @if(Auth::check() && Auth::user()->role === 'vendor' && Auth::user()->id === $pesanan->user_id)
+    <form action="{{ route('deleteiklan', ['id' => $pesanan->id]) }}" method="post" style="display: inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus iklan ini?')">
+            Hapus Iklan
+        </button>
+    </form>
+@endif
+@if($pesanan->vendor)
+<button onclick="window.location.href='https://wa.me/{{ $pesanan->vendor->nohp }}'">Pesan</button>
+@else
+<p>Tidak ada vendor.</p>
+@endif
+<button onclick="window.location.href='{{ route('vendordetail', ['nama_pesanan_id' => $pesanan->nama_pesanan . '_id_' . $pesanan->id]) }}'">Lihat Detail</button>
+
                     </div>
-
-                    <form action="{{ $pesanan->publish === 'publish' ? route('sembunyikan', ['id' => $pesanan->id]) : route('tampilkan', ['id' => $pesanan->id]) }}" method="post" style="display: inline;">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" onclick="return confirm('{{ $pesanan->publish === 'publish' ? 'Apakah Anda yakin ingin menyembunyikan iklan ini?' : 'Apakah Anda yakin ingin menampilkan iklan ini?' }}')">
-                            {{ $pesanan->publish === 'publish' ? 'Sembunyikan Iklan' : 'Tampilkan Iklan' }}
-                        </button>
-                    </form>
-                    <form action="{{ route('deleteiklan', ['id' => $pesanan->id]) }}" method="post" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus iklan ini?')">
-                            Hapus Iklan
-                        </button>
-                    </form>
-                    <button onclick="window.location.href='{{ route('vendordetail', ['nama_pesanan_id' => $pesanan->nama_pesanan . '_id_' . $pesanan->id]) }}'">Lihat Detail</button>
-
-
                 </div>
-
-
-            </div>
-            @endif
             @endforeach
         </section>
+
     </div>
 </body>
 

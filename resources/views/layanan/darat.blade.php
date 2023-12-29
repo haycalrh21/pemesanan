@@ -173,7 +173,7 @@ button:hover {
                     @endif
 
                     <!-- Tombol lihat detail -->
-                    <button onclick="window.location.href='{{ route('vendordetail', ['id' => $order->id]) }}'">Lihat Detail</button>
+                    {{-- <button onclick="window.location.href='{{ route('vendordetail', ['nama_pesanan_id' => $pesanan->nama_pesanan . '_id_' . $pesanan->id]) }}'">Lihat Detail</button> --}}
 
                 </div>
             </div>
